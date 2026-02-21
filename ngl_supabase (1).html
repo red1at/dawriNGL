@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -113,6 +114,17 @@
 
   /* LOADING */
   .loading { text-align:center; padding:30px; color:var(--gray-400); font-size:0.85rem; }
+
+  /* SHARE BUTTON */
+  .share-btn { background:var(--gold); color:#1a1a2e; border:none; border-radius:8px; padding:8px 18px; font-family:'Cairo',sans-serif; font-size:0.82rem; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:6px; transition:all 0.2s; }
+  .share-btn:hover { background:#d4991f; }
+  .share-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#1a1a2e; color:white; padding:10px 20px; border-radius:8px; font-size:0.82rem; font-weight:700; z-index:999; opacity:0; transition:opacity 0.3s; pointer-events:none; }
+  .share-toast.show { opacity:1; }
+
+  /* VIEW MODE */
+  body.view-mode .edit-only { display:none !important; }
+  body.view-mode .view-banner { display:flex !important; }
+  .view-banner { display:none; background:#ebfbee; border-bottom:1px solid #b2f2bb; padding:7px 20px; align-items:center; justify-content:center; gap:8px; font-size:0.78rem; color:var(--green); font-weight:700; }
 </style>
 </head>
 <body>
@@ -122,15 +134,22 @@
   <p>فوز = 3 نقاط · تعادل = 1 نقطة · خسارة = 0 نقاط</p>
 </div>
 
+<div class="view-banner">
+  👁️ وضع العرض فقط — لا يمكن التعديل
+</div>
+
 <div class="sync-bar">
   <div class="sync-dot" id="sync-dot"></div>
   <span class="sync-text" id="sync-text">جارٍ الاتصال بقاعدة البيانات...</span>
+  <button class="share-btn edit-only" onclick="shareViewLink()" style="margin-right:auto">📤 مشاركة</button>
 </div>
+
+<div class="share-toast" id="share-toast">✓ تم نسخ رابط المشاركة!</div>
 
 <div class="container">
   <div class="tabs">
     <button class="tab active" onclick="switchTab('standings',this)">🏆 الترتيب</button>
-    <button class="tab" onclick="switchTab('matches',this)">📅 النتائج</button>
+    <button class="tab edit-only" onclick="switchTab('matches',this)">📅 النتائج</button>
     <button class="tab" onclick="switchTab('scorers',this)">⚽ الهدافون</button>
     <button class="tab" onclick="switchTab('cards',this)">🟨 البطاقات</button>
   </div>
@@ -467,6 +486,31 @@ function renderCards() {
     : '<div class="scorer-row" style="color:#aaa;justify-content:center">لا توجد بطاقات بعد</div>';
 }
 
+// ── INIT ──
+// Check if view mode
+const IS_VIEW = new URLSearchParams(window.location.search).get('view') === '1';
+if (IS_VIEW) {
+  document.body.classList.add('view-mode');
+  // Switch to standings tab by default in view mode (skip matches tab)
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const firstVisibleTab = document.querySelector('.tab:not(.edit-only)');
+  if (firstVisibleTab) firstVisibleTab.classList.add('active');
+  document.getElementById('panel-standings').classList.add('active');
+}
+
+function shareViewLink() {
+  const base = window.location.origin + window.location.pathname;
+  const link = base + '?view=1';
+  navigator.clipboard.writeText(link).then(() => {
+    const toast = document.getElementById('share-toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }).catch(() => {
+    prompt('انسخ هذا الرابط:', link);
+  });
+}
+
 function switchTab(name, btn) {
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -474,7 +518,6 @@ function switchTab(name, btn) {
   document.getElementById('panel-'+name).classList.add('active');
 }
 
-// ── INIT ──
 loadAll();
 // Auto-refresh every 30 seconds
 setInterval(loadAll, 30000);
