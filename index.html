@@ -129,7 +129,7 @@
 <body>
 
 <div class="header">
-  <h1>🏆 دوري الجيل الجديد 2025</h1>
+  <h1>🏆 دوري الجيل الجديد 2026</h1>
   <p>فوز = 3 نقاط · تعادل = 1 نقطة · خسارة = 0 نقاط</p>
 </div>
 
@@ -354,7 +354,7 @@ function renderAll() { renderMatches(); renderStandings(); renderScorers(); rend
 function renderMatches() {
   let html = ''; let currentMonth = '';
   MATCHES.forEach((m, idx) => {
-    const month = m.date.includes('فبراير') ? '📅 فبراير 2025' : '📅 مارس 2025';
+    const month = m.date.includes('فبراير') ? '📅 فبراير 2026' : '📅 مارس 2026';
     if (month !== currentMonth) { currentMonth=month; html+=`<div class="month-label">${month}</div>`; }
     const r = matchResults[idx];
     const played = r && r.home_score !== null && r.home_score !== undefined;
