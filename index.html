@@ -6,26 +6,14 @@
 <title>دوري الجيل الجديد 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --blue: #01429C;
-    --blue-mid: #0252bf;
-    --gold: #f0b429;
-    --gray-100: #f1f3f5;
-    --gray-200: #e9ecef;
-    --gray-400: #adb5bd;
-    --red: #e03131;
-    --yellow: #f59f00;
-    --green: #2f9e44;
-  }
+  :root { --blue:#01429C; --blue-mid:#0252bf; --gold:#f0b429; --gray-100:#f1f3f5; --gray-200:#e9ecef; --gray-400:#adb5bd; --red:#e03131; --yellow:#f59f00; --green:#2f9e44; }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Cairo',sans-serif; background:var(--gray-100); direction:rtl; min-height:100vh; padding-bottom:60px; }
 
-  /* HEADER */
   .header { background:var(--blue); padding:18px 24px; text-align:center; border-bottom:4px solid var(--gold); }
   .header h1 { color:var(--gold); font-size:1.5rem; font-weight:900; }
   .header p { color:rgba(255,255,255,0.6); font-size:0.78rem; margin-top:3px; }
 
-  /* SYNC STATUS */
   .sync-bar { background:white; border-bottom:1px solid var(--gray-200); padding:6px 20px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:0.75rem; }
   .sync-dot { width:8px; height:8px; border-radius:50%; background:var(--gray-400); flex-shrink:0; }
   .sync-dot.online { background:var(--green); animation:pulse 2s infinite; }
@@ -36,27 +24,27 @@
 
   .container { max-width:980px; margin:0 auto; padding:20px 14px; }
 
-  /* TABS */
-  .tabs { display:flex; gap:4px; margin-bottom:18px; border-bottom:2px solid var(--gray-200); }
-  .tab { background:none; border:none; font-family:'Cairo',sans-serif; font-size:0.85rem; font-weight:700; color:var(--gray-400); padding:10px 16px; cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:all 0.2s; }
+  .tabs { display:flex; gap:4px; margin-bottom:18px; border-bottom:2px solid var(--gray-200); overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab { background:none; border:none; font-family:'Cairo',sans-serif; font-size:0.85rem; font-weight:700; color:var(--gray-400); padding:10px 16px; cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:all 0.2s; white-space:nowrap; flex-shrink:0; }
   .tab:hover { color:var(--blue); }
   .tab.active { color:var(--blue); border-bottom-color:var(--blue); }
   .panel { display:none; }
   .panel.active { display:block; }
 
-  /* CARD */
   .card { background:white; border-radius:12px; overflow:hidden; box-shadow:0 2px 16px rgba(1,66,156,0.08); margin-bottom:16px; }
   .card-header { background:var(--blue); padding:11px 18px; color:var(--gold); font-size:0.95rem; font-weight:900; }
 
-  /* STANDINGS */
-  table { width:100%; border-collapse:collapse; }
+  /* STANDINGS — scrollable on mobile */
+  .table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  table { width:100%; border-collapse:collapse; min-width:520px; }
   thead th { background:var(--blue); color:rgba(255,255,255,0.85); font-size:0.73rem; font-weight:700; padding:9px 8px; text-align:center; border-bottom:2px solid var(--gold); white-space:nowrap; }
   thead th:nth-child(2) { text-align:right; }
   tbody tr { border-bottom:1px solid var(--gray-200); transition:background 0.15s; }
   tbody tr:hover { background:#eef3fb; }
   tbody tr:nth-child(even) { background:#fafbfc; }
   tbody tr:nth-child(even):hover { background:#eef3fb; }
-  tbody td { padding:10px 8px; text-align:center; font-size:0.85rem; color:#1a1a2e; vertical-align:middle; }
+  tbody td { padding:10px 8px; text-align:center; font-size:0.85rem; color:#1a1a2e; vertical-align:middle; white-space:nowrap; }
   .rank { font-weight:900; color:var(--blue); font-size:1rem; }
   .rank-1 { color:#f59f00; } .rank-2 { color:#868e96; } .rank-3 { color:#cd6133; }
   .team-name-td { text-align:right !important; font-weight:800; font-size:0.9rem; }
@@ -86,41 +74,42 @@
   .played-badge { font-size:0.65rem; font-weight:700; padding:2px 7px; border-radius:20px; background:#ebfbee; color:var(--green); border:1px solid var(--green); }
   .pending-badge { font-size:0.65rem; font-weight:700; padding:2px 7px; border-radius:20px; background:var(--gray-100); color:var(--gray-400); border:1px solid var(--gray-200); }
 
-  /* DETAIL */
+  /* DETAIL PANEL — goals only */
   .match-detail { display:none; border-top:1px solid var(--gray-200); padding:14px 16px; background:#fafbfc; }
   .match-detail.open { display:block; }
   .detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:520px){ .detail-grid { grid-template-columns:1fr; } }
   .team-detail-box { background:white; border-radius:8px; border:1px solid var(--gray-200); padding:12px; }
   .team-detail-title { font-weight:900; color:var(--blue); font-size:0.82rem; margin-bottom:10px; border-bottom:1px solid var(--gray-200); padding-bottom:6px; }
-  .player-stat-row { display:flex; align-items:center; gap:6px; margin-bottom:7px; flex-wrap:wrap; }
-  .player-stat-name { font-size:0.78rem; font-weight:700; flex:1; min-width:80px; color:#1a1a2e; }
-  .stat-counter { display:flex; align-items:center; gap:3px; }
-  .counter-btn { width:20px; height:20px; border-radius:4px; border:none; cursor:pointer; font-size:0.8rem; font-weight:900; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
-  .counter-val { font-size:0.85rem; font-weight:900; min-width:16px; text-align:center; }
-  .goal-btn { background:var(--green); color:white; } .goal-btn:hover{background:#237032;} .goal-val{color:var(--green);}
-  .yellow-btn { background:var(--yellow); color:white; } .yellow-btn:hover{background:#d48806;} .yellow-val{color:var(--yellow);}
-  .red-btn { background:var(--red); color:white; } .red-btn:hover{background:#b02525;} .red-val{color:var(--red);}
+  .player-row { display:flex; align-items:center; justify-content:space-between; padding:5px 0; border-bottom:1px solid var(--gray-100); }
+  .player-row:last-child { border-bottom:none; }
+  .player-name { font-size:0.78rem; font-weight:700; flex:1; color:#1a1a2e; }
+  .counter { display:flex; align-items:center; gap:4px; }
+  .ctr-btn { width:22px; height:22px; border-radius:5px; border:none; cursor:pointer; font-size:0.85rem; font-weight:900; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+  .ctr-val { font-size:0.88rem; font-weight:900; min-width:18px; text-align:center; }
+  .goal-btn { background:var(--green); color:white; } .goal-btn:hover{background:#237032;} .goal-btn.minus{background:#dee2e6;color:#555;}
+  .goal-val { color:var(--green); }
+  .yellow-btn { background:var(--yellow); color:white; } .yellow-btn:hover{background:#d48806;} .yellow-btn.minus{background:#dee2e6;color:#555;}
+  .yellow-val { color:var(--yellow); }
+  .red-btn { background:var(--red); color:white; } .red-btn:hover{background:#b02525;} .red-btn.minus{background:#dee2e6;color:#555;}
+  .red-val { color:var(--red); }
   .susp-btn { font-size:0.65rem; font-weight:700; padding:3px 8px; border-radius:20px; cursor:pointer; border:1px solid var(--gray-200); background:white; color:var(--gray-400); font-family:'Cairo',sans-serif; transition:all 0.2s; white-space:nowrap; }
   .susp-btn.on { background:var(--red); border-color:var(--red); color:white; }
 
   /* SCORERS / CARDS */
-  .scorer-row { display:flex; align-items:center; justify-content:space-between; padding:9px 18px; border-bottom:1px solid var(--gray-200); font-size:0.85rem; }
+  .scorer-row { display:flex; align-items:center; justify-content:space-between; padding:9px 18px; border-bottom:1px solid var(--gray-200); font-size:0.85rem; gap:6px; }
   .scorer-row:last-child { border-bottom:none; }
   .scorer-name { font-weight:700; }
-  .scorer-team { color:var(--gray-400); font-size:0.75rem; margin:0 6px; }
+  .scorer-team { color:var(--gray-400); font-size:0.75rem; flex:1; padding:0 6px; }
   .scorer-goals { font-weight:900; color:var(--green); font-size:1rem; }
-  .susp-tag { background:var(--red); color:white; font-size:0.65rem; font-weight:700; padding:2px 8px; border-radius:20px; }
-
-  /* LOADING */
+  .susp-tag { background:var(--red); color:white; font-size:0.65rem; font-weight:700; padding:2px 8px; border-radius:20px; white-space:nowrap; }
   .loading { text-align:center; padding:30px; color:var(--gray-400); font-size:0.85rem; }
 
-  /* SHARE BUTTON */
+  /* SHARE */
   .share-btn { background:var(--gold); color:#1a1a2e; border:none; border-radius:8px; padding:8px 18px; font-family:'Cairo',sans-serif; font-size:0.82rem; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:6px; transition:all 0.2s; }
   .share-btn:hover { background:#d4991f; }
   .share-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#1a1a2e; color:white; padding:10px 20px; border-radius:8px; font-size:0.82rem; font-weight:700; z-index:999; opacity:0; transition:opacity 0.3s; pointer-events:none; }
   .share-toast.show { opacity:1; }
-
-  /* VIEW MODE */
   body.view-mode .edit-only { display:none !important; }
   body.view-mode .view-banner { display:flex !important; }
   .view-banner { display:none; background:#ebfbee; border-bottom:1px solid #b2f2bb; padding:7px 20px; align-items:center; justify-content:center; gap:8px; font-size:0.78rem; color:var(--green); font-weight:700; }
@@ -132,43 +121,51 @@
   <h1>🏆 دوري الجيل الجديد 2026</h1>
   <p>فوز = 3 نقاط · تعادل = 1 نقطة · خسارة = 0 نقاط</p>
 </div>
-
-<div class="view-banner">
-  👁️ وضع العرض فقط — لا يمكن التعديل
-</div>
-
+<div class="view-banner">👁️ وضع العرض فقط — لا يمكن التعديل</div>
 <div class="sync-bar">
   <div class="sync-dot" id="sync-dot"></div>
   <span class="sync-text" id="sync-text">جارٍ الاتصال بقاعدة البيانات...</span>
   <button class="share-btn edit-only" onclick="shareViewLink()" style="margin-right:auto">📤 مشاركة</button>
 </div>
-
 <div class="share-toast" id="share-toast">✓ تم نسخ رابط المشاركة!</div>
 
 <div class="container">
   <div class="tabs">
     <button class="tab active" onclick="switchTab('standings',this)">🏆 الترتيب</button>
-    <button class="tab edit-only" onclick="switchTab('matches',this)">📅 النتائج</button>
+    <button class="tab edit-only" onclick="switchTab('matches',this)">📅 النتائج والأهداف</button>
+    <button class="tab edit-only" onclick="switchTab('cardsinput',this)">🟨 البطاقات</button>
     <button class="tab" onclick="switchTab('scorers',this)">⚽ الهدافون</button>
-    <button class="tab" onclick="switchTab('cards',this)">🟨 البطاقات</button>
+    <button class="tab" onclick="switchTab('cardsview',this)">📋 الإيقافات</button>
   </div>
 
+  <!-- STANDINGS -->
   <div class="panel active" id="panel-standings">
     <div class="card">
       <div class="card-header">📊 جدول الترتيب</div>
-      <table>
-        <thead><tr>
-          <th>#</th><th style="text-align:right">الفريق</th>
-          <th>لعب</th><th>فاز</th><th>تعادل</th><th>خسر</th>
-          <th>له</th><th>عليه</th><th>فارق</th><th>نقاط</th><th>الشكل</th>
-        </tr></thead>
-        <tbody id="standings-body"><tr><td colspan="11" class="loading">⏳ جارٍ التحميل...</td></tr></tbody>
-      </table>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th style="text-align:right">الفريق</th>
+            <th>لعب</th><th>فاز</th><th>تعادل</th><th>خسر</th>
+            <th>له</th><th>عليه</th><th>فارق</th><th>نقاط</th><th>الشكل</th>
+          </tr></thead>
+          <tbody id="standings-body"><tr><td colspan="11" class="loading">⏳ جارٍ التحميل...</td></tr></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
-  <div class="panel" id="panel-matches"><div id="matches-list"><div class="loading">⏳ جارٍ التحميل...</div></div></div>
+  <!-- RESULTS + GOALS INPUT -->
+  <div class="panel" id="panel-matches">
+    <div id="matches-list"><div class="loading">⏳ جارٍ التحميل...</div></div>
+  </div>
 
+  <!-- CARDS INPUT -->
+  <div class="panel" id="panel-cardsinput">
+    <div id="cards-input-list"><div class="loading">⏳ جارٍ التحميل...</div></div>
+  </div>
+
+  <!-- SCORERS VIEW -->
   <div class="panel" id="panel-scorers">
     <div class="card">
       <div class="card-header">⚽ ترتيب الهدافين</div>
@@ -176,10 +173,15 @@
     </div>
   </div>
 
-  <div class="panel" id="panel-cards">
+  <!-- SUSPENSIONS VIEW -->
+  <div class="panel" id="panel-cardsview">
     <div class="card" style="margin-bottom:16px">
       <div class="card-header">🚫 الموقوفون للجولة القادمة</div>
       <div id="suspended-body"><div class="loading">⏳</div></div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header">🟥 البطاقات الحمراء</div>
+      <div id="reds-body"><div class="loading">⏳</div></div>
     </div>
     <div class="card">
       <div class="card-header">🟨 البطاقات الصفراء التراكمية</div>
@@ -189,12 +191,9 @@
 </div>
 
 <script>
-// ── CONFIG ──
 const SUPABASE_URL = 'https://reksuhcvliwqjorpssou.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJla3N1aGN2bGl3cWpvcnBzc291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MzM1MjYsImV4cCI6MjA4NzIwOTUyNn0.Nn1dIGX035AUFuUk9v6zaldjIC6ZHyxeD5rVoIUYPDk';
-const HEADERS = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' };
 
-// ── DATA ──
 const TEAMS_LIST = ['إمدوكال','الرسينغ','الخفافيش','توريرت','تاريحانت','أتلاتيك طورورد','إتحاد أكني'];
 const PLAYERS = {
   'إمدوكال':['خالد أيت محند','إدريس الحيان','عادل أيت محند','مصطفى أيت أمغار','منير أيت الحسن اعلي','محمد أيت أمغار','عبد الرحيم أيت محند'],
@@ -229,173 +228,144 @@ const MATCHES = [
   {day:21,date:'12 مارس',home:'إتحاد أكني',away:'الخفافيش'},
 ];
 
-// ── LOCAL STATE (cache) ──
-let matchResults = {};   // { match_idx: {home_score, away_score} }
-let playerStats  = {};   // { `${match_idx}-${side}-${player}`: {goals,yellows,reds,suspended} }
+let matchResults = {}, playerStats = {};
 
-// ── SUPABASE API ──
 async function sbGet(path) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
-    method: 'GET',
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-  });
-  if (!res.ok) throw new Error(`GET ${path}: ${res.status} - ${await res.text()}`);
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, { headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`} });
+  if (!res.ok) throw new Error(`${res.status} ${await res.text()}`);
   return res.json();
 }
-
 async function sbUpsert(table, body) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
-    method: 'POST',
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'resolution=merge-duplicates,return=minimal',
-    },
+    method:'POST',
+    headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},
     body: JSON.stringify(body)
   });
-  if (!res.ok) throw new Error(`UPSERT ${table}: ${res.status} - ${await res.text()}`);
+  if (!res.ok) throw new Error(`${res.status} ${await res.text()}`);
 }
 
-function setSyncStatus(status, text) {
-  const dot = document.getElementById('sync-dot');
-  const txt = document.getElementById('sync-text');
-  dot.className = 'sync-dot ' + status;
-  txt.textContent = text;
+function setSyncStatus(s,t) {
+  document.getElementById('sync-dot').className='sync-dot '+s;
+  document.getElementById('sync-text').textContent=t;
 }
 
 async function loadAll() {
   try {
-    setSyncStatus('syncing', 'جارٍ تحميل البيانات...');
-    const [results, stats] = await Promise.all([
-      sbGet('match_results?select=*'),
-      sbGet('player_stats?select=*'),
-    ]);
-    matchResults = {};
-    results.forEach(r => { matchResults[r.match_idx] = r; });
-    playerStats = {};
-    stats.forEach(s => { playerStats[`${s.match_idx}-${s.side}-${s.player_name}`] = s; });
-    setSyncStatus('online', '🟢 متصل · يتحدث تلقائياً');
+    setSyncStatus('syncing','جارٍ تحميل البيانات...');
+    const [results,stats] = await Promise.all([sbGet('match_results?select=*'),sbGet('player_stats?select=*')]);
+    matchResults={};
+    results.forEach(r=>{ matchResults[r.match_idx]=r; });
+    playerStats={};
+    stats.forEach(s=>{ playerStats[`${s.match_idx}-${s.side}-${s.player_name}`]=s; });
+    setSyncStatus('online','🟢 متصل · يتحدث تلقائياً');
     renderAll();
-  } catch(e) {
-    setSyncStatus('error', '🔴 خطأ: ' + e.message);
-    console.error(e);
-  }
+  } catch(e) { setSyncStatus('error','🔴 خطأ: '+e.message); }
 }
 
 async function saveMatchResult(idx) {
-  const h = document.getElementById('h-'+idx).value;
-  const a = document.getElementById('a-'+idx).value;
-  if (h===''||a==='') return;
+  const h=document.getElementById('h-'+idx).value, a=document.getElementById('a-'+idx).value;
+  if(h===''||a==='') return;
   setSyncStatus('syncing','⏳ جارٍ الحفظ...');
   try {
-    await sbUpsert('match_results', {match_idx:idx, home_score:parseInt(h), away_score:parseInt(a)});
-    matchResults[idx] = {match_idx:idx, home_score:parseInt(h), away_score:parseInt(a)};
+    await sbUpsert('match_results',{match_idx:idx,home_score:parseInt(h),away_score:parseInt(a)});
+    matchResults[idx]={match_idx:idx,home_score:parseInt(h),away_score:parseInt(a)};
     setSyncStatus('online','🟢 تم الحفظ بنجاح ✓');
     renderAll();
-  } catch(e) {
-    setSyncStatus('error','🔴 فشل الحفظ: ' + e.message);
-    console.error(e);
-  }
+  } catch(e) { setSyncStatus('error','🔴 فشل الحفظ: '+e.message); }
 }
 
-async function savePlayerStat(idx, side, player) {
-  const key = `${idx}-${side}-${player}`;
-  const d = playerStats[key] || {goals:0,yellows:0,reds:0,suspended:false};
-  setSyncStatus('syncing','⏳ جارٍ الحفظ...');
-  try {
-    await sbUpsert('player_stats', {
-      match_idx: idx, side, player_name: player,
-      goals: d.goals||0, yellows: d.yellows||0, reds: d.reds||0, suspended: d.suspended||false
-    });
-    setSyncStatus('online','🟢 تم الحفظ ✓');
-    renderScorers(); renderCards();
-  } catch(e) {
-    setSyncStatus('error','🔴 فشل الحفظ: ' + e.message);
-    console.error(e);
-  }
-}
-
-function getPlayerStat(idx, side, player) {
-  const key = `${idx}-${side}-${player}`;
-  if (!playerStats[key]) playerStats[key] = {goals:0,yellows:0,reds:0,suspended:false};
+function getPS(idx,side,player) {
+  const key=`${idx}-${side}-${player}`;
+  if(!playerStats[key]) playerStats[key]={goals:0,yellows:0,reds:0,suspended:false};
   return playerStats[key];
 }
 
-// ── INTERACTIONS ──
-function changePlayerStat(idx, side, player, field, delta) {
-  const d = getPlayerStat(idx, side, player);
-  d[field] = Math.max(0, (d[field]||0) + delta);
-  document.getElementById(`val-${idx}-${side}-${player}-${field}`).textContent = d[field];
-  savePlayerStat(idx, side, player);
+async function savePS(idx,side,player) {
+  const d=getPS(idx,side,player);
+  setSyncStatus('syncing','⏳ جارٍ الحفظ...');
+  try {
+    await sbUpsert('player_stats',{match_idx:idx,side,player_name:player,goals:d.goals||0,yellows:d.yellows||0,reds:d.reds||0,suspended:d.suspended||false});
+    setSyncStatus('online','🟢 تم الحفظ ✓');
+    renderScorers(); renderCardsView();
+  } catch(e) { setSyncStatus('error','🔴 فشل الحفظ: '+e.message); }
 }
 
-function toggleSuspended(idx, side, player) {
-  const d = getPlayerStat(idx, side, player);
-  d.suspended = !d.suspended;
-  const btn = document.getElementById(`susp-${idx}-${side}-${player}`);
-  btn.textContent = d.suspended ? '🚫 موقوف' : 'لا';
-  btn.classList.toggle('on', d.suspended);
-  savePlayerStat(idx, side, player);
+function changeGoal(idx,side,player,delta) {
+  const d=getPS(idx,side,player);
+  d.goals=Math.max(0,(d.goals||0)+delta);
+  const el=document.getElementById(`gv-${idx}-${side}-${player}`);
+  if(el) el.textContent=d.goals;
+  savePS(idx,side,player);
+}
+
+function changeCard(idx,side,player,field,delta) {
+  const d=getPS(idx,side,player);
+  d[field]=Math.max(0,(d[field]||0)+delta);
+  const el=document.getElementById(`cv-${idx}-${side}-${player}-${field}`);
+  if(el) el.textContent=d[field];
+  if(field==='reds') {
+    d.suspended=d.reds>0;
+    const sb=document.getElementById(`cs-${idx}-${side}-${player}`);
+    if(sb){sb.textContent=d.suspended?'🚫 موقوف':'لا';sb.classList.toggle('on',d.suspended);}
+  }
+  savePS(idx,side,player);
+}
+
+function toggleSusp(idx,side,player) {
+  const d=getPS(idx,side,player);
+  d.suspended=!d.suspended;
+  const sb=document.getElementById(`cs-${idx}-${side}-${player}`);
+  if(sb){sb.textContent=d.suspended?'🚫 موقوف':'لا';sb.classList.toggle('on',d.suspended);}
+  savePS(idx,side,player);
 }
 
 function toggleDetail(idx) {
-  const panel = document.getElementById('detail-'+idx);
-  const btn = document.getElementById('expand-'+idx);
-  const isOpen = panel.classList.contains('open');
-  panel.classList.toggle('open', !isOpen);
-  btn.classList.toggle('open', !isOpen);
-  btn.textContent = isOpen ? '+ تفاصيل' : '− إغلاق';
+  const el=document.getElementById('detail-'+idx),btn=document.getElementById('expand-'+idx);
+  const open=el.classList.toggle('open');
+  btn.classList.toggle('open',open);
+  btn.textContent=open?'− إغلاق':'+ أهداف';
 }
 
-// ── RENDER ──
-function renderAll() { renderMatches(); renderStandings(); renderScorers(); renderCards(); }
+function toggleCardDetail(idx) {
+  const el=document.getElementById('cdetail-'+idx),btn=document.getElementById('cexpand-'+idx);
+  const open=el.classList.toggle('open');
+  btn.classList.toggle('open',open);
+  btn.textContent=open?'− إغلاق':'+ بطاقات';
+}
+
+function renderAll() { renderMatches(); renderCardsInput(); renderStandings(); renderScorers(); renderCardsView(); }
 
 function renderMatches() {
-  let html = ''; let currentMonth = '';
-  MATCHES.forEach((m, idx) => {
-    const month = m.date.includes('فبراير') ? '📅 فبراير 2026' : '📅 مارس 2026';
-    if (month !== currentMonth) { currentMonth=month; html+=`<div class="month-label">${month}</div>`; }
-    const r = matchResults[idx];
-    const played = r && r.home_score !== null && r.home_score !== undefined;
-    const hVal = played ? r.home_score : '';
-    const aVal = played ? r.away_score : '';
-    const badge = played ? '<span class="played-badge">✓ مسجل</span>' : '<span class="pending-badge">لم يلعب</span>';
+  let html='',curMonth='';
+  MATCHES.forEach((m,idx)=>{
+    const month=m.date.includes('فبراير')?'📅 فبراير 2026':'📅 مارس 2026';
+    if(month!==curMonth){curMonth=month;html+=`<div class="month-label">${month}</div>`;}
+    const r=matchResults[idx];
+    const played=r&&r.home_score!==null&&r.home_score!==undefined;
+    const hVal=played?r.home_score:'',aVal=played?r.away_score:'';
+    const badge=played?'<span class="played-badge">✓ مسجل</span>':'<span class="pending-badge">لم يلعب</span>';
 
-    // Detail panel
-    let detailHtml = `<div class="match-detail" id="detail-${idx}"><div class="detail-grid">`;
-    ['home','away'].forEach(side => {
-      const teamName = m[side];
-      const players = PLAYERS[teamName]||[];
-      detailHtml += `<div class="team-detail-box"><div class="team-detail-title">⚽ ${teamName}</div>`;
-      players.forEach(player => {
-        const d = getPlayerStat(idx, side, player);
-        const pid = `${idx}-${side}-${player}`;
-        detailHtml += `<div class="player-stat-row">
-          <span class="player-stat-name">${player}</span>
-          <div class="stat-counter">
-            <button class="counter-btn goal-btn" onclick="changePlayerStat(${idx},'${side}','${player}','goals',-1)">−</button>
-            <span class="counter-val goal-val" id="val-${pid}-goals">${d.goals||0}</span>
-            <button class="counter-btn goal-btn" onclick="changePlayerStat(${idx},'${side}','${player}','goals',1)">+</button>
+    // Goals detail
+    let detail=`<div class="match-detail" id="detail-${idx}"><div class="detail-grid">`;
+    ['home','away'].forEach(side=>{
+      const team=m[side],players=PLAYERS[team]||[];
+      detail+=`<div class="team-detail-box"><div class="team-detail-title">⚽ ${team}</div>`;
+      players.forEach(p=>{
+        const d=getPS(idx,side,p);
+        detail+=`<div class="player-row">
+          <span class="player-name">${p}</span>
+          <div class="counter">
+            <button class="ctr-btn goal-btn minus" onclick="changeGoal(${idx},'${side}','${p}',-1)">−</button>
+            <span class="ctr-val goal-val" id="gv-${idx}-${side}-${p}">${d.goals||0}</span>
+            <button class="ctr-btn goal-btn" onclick="changeGoal(${idx},'${side}','${p}',1)">+</button>
           </div>
-          <div class="stat-counter">
-            <button class="counter-btn yellow-btn" onclick="changePlayerStat(${idx},'${side}','${player}','yellows',-1)">−</button>
-            <span class="counter-val yellow-val" id="val-${pid}-yellows">${d.yellows||0}</span>
-            <button class="counter-btn yellow-btn" onclick="changePlayerStat(${idx},'${side}','${player}','yellows',1)">+</button>
-          </div>
-          <div class="stat-counter">
-            <button class="counter-btn red-btn" onclick="changePlayerStat(${idx},'${side}','${player}','reds',-1)">−</button>
-            <span class="counter-val red-val" id="val-${pid}-reds">${d.reds||0}</span>
-            <button class="counter-btn red-btn" onclick="changePlayerStat(${idx},'${side}','${player}','reds',1)">+</button>
-          </div>
-          <button class="susp-btn ${d.suspended?'on':''}" id="susp-${pid}" onclick="toggleSuspended(${idx},'${side}','${player}')">${d.suspended?'🚫 موقوف':'لا'}</button>
         </div>`;
       });
-      detailHtml += '</div>';
+      detail+='</div>';
     });
-    detailHtml += '</div></div>';
+    detail+='</div></div>';
 
-    html += `<div class="match-card">
+    html+=`<div class="match-card">
       <div class="match-top">
         <div class="match-day-badge">م${m.day}</div>
         <div class="match-date">${m.date}</div>
@@ -411,32 +381,85 @@ function renderMatches() {
         ${badge}
         <div class="match-actions">
           <button class="save-btn ${played?'saved':''}" onclick="saveMatchResult(${idx})">${played?'✓ تحديث':'حفظ'}</button>
-          <button class="expand-btn" id="expand-${idx}" onclick="toggleDetail(${idx})">+ تفاصيل</button>
+          <button class="expand-btn" id="expand-${idx}" onclick="toggleDetail(${idx})">+ أهداف</button>
         </div>
       </div>
-      ${detailHtml}
+      ${detail}
     </div>`;
   });
-  document.getElementById('matches-list').innerHTML = html;
+  document.getElementById('matches-list').innerHTML=html;
+}
+
+function renderCardsInput() {
+  let html='',curMonth='';
+  MATCHES.forEach((m,idx)=>{
+    const month=m.date.includes('فبراير')?'📅 فبراير 2026':'📅 مارس 2026';
+    if(month!==curMonth){curMonth=month;html+=`<div class="month-label">${month}</div>`;}
+    const r=matchResults[idx];
+    const played=r&&r.home_score!==null&&r.home_score!==undefined;
+    const badge=played?`<span class="played-badge">${r.home_score} - ${r.away_score}</span>`:'<span class="pending-badge">لم يلعب</span>';
+
+    // Cards detail
+    let detail=`<div class="match-detail" id="cdetail-${idx}"><div class="detail-grid">`;
+    ['home','away'].forEach(side=>{
+      const team=m[side],players=PLAYERS[team]||[];
+      detail+=`<div class="team-detail-box"><div class="team-detail-title">${team}</div>`;
+      players.forEach(p=>{
+        const d=getPS(idx,side,p);
+        detail+=`<div class="player-row" style="flex-wrap:wrap;gap:6px;">
+          <span class="player-name">${p}</span>
+          <div class="counter">
+            <button class="ctr-btn yellow-btn minus" onclick="changeCard(${idx},'${side}','${p}','yellows',-1)">−</button>
+            <span class="ctr-val yellow-val" id="cv-${idx}-${side}-${p}-yellows">${d.yellows||0}</span>
+            <button class="ctr-btn yellow-btn" onclick="changeCard(${idx},'${side}','${p}','yellows',1)">🟨</button>
+          </div>
+          <div class="counter">
+            <button class="ctr-btn red-btn minus" onclick="changeCard(${idx},'${side}','${p}','reds',-1)">−</button>
+            <span class="ctr-val red-val" id="cv-${idx}-${side}-${p}-reds">${d.reds||0}</span>
+            <button class="ctr-btn red-btn" onclick="changeCard(${idx},'${side}','${p}','reds',1)">🟥</button>
+          </div>
+          <button class="susp-btn ${d.suspended?'on':''}" id="cs-${idx}-${side}-${p}" onclick="toggleSusp(${idx},'${side}','${p}')">${d.suspended?'🚫 موقوف':'لا'}</button>
+        </div>`;
+      });
+      detail+='</div>';
+    });
+    detail+='</div></div>';
+
+    html+=`<div class="match-card">
+      <div class="match-top">
+        <div class="match-day-badge">م${m.day}</div>
+        <div class="match-date">${m.date}</div>
+        <div class="match-teams">
+          <div class="match-team-name">${m.home}</div>
+          <span class="score-sep">vs</span>
+          <div class="match-team-name">${m.away}</div>
+        </div>
+        ${badge}
+        <div class="match-actions">
+          <button class="expand-btn" id="cexpand-${idx}" onclick="toggleCardDetail(${idx})">+ بطاقات</button>
+        </div>
+      </div>
+      ${detail}
+    </div>`;
+  });
+  document.getElementById('cards-input-list').innerHTML=html;
 }
 
 function renderStandings() {
-  const stats = {};
-  TEAMS_LIST.forEach(t => { stats[t]={p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0,form:[]}; });
-  MATCHES.forEach((m, idx) => {
-    const r = matchResults[idx];
-    if (!r||r.home_score===null||r.home_score===undefined) return;
-    const hg=r.home_score, ag=r.away_score;
-    const hs=stats[m.home], as_=stats[m.away];
+  const stats={};
+  TEAMS_LIST.forEach(t=>{stats[t]={p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0,form:[]};});
+  MATCHES.forEach((m,idx)=>{
+    const r=matchResults[idx];
+    if(!r||r.home_score===null||r.home_score===undefined) return;
+    const hg=r.home_score,ag=r.away_score,hs=stats[m.home],as_=stats[m.away];
     hs.p++;as_.p++;hs.gf+=hg;hs.ga+=ag;as_.gf+=ag;as_.ga+=hg;
     if(hg>ag){hs.w++;hs.pts+=3;as_.l++;hs.form.push('W');as_.form.push('L');}
     else if(hg<ag){as_.w++;as_.pts+=3;hs.l++;hs.form.push('L');as_.form.push('W');}
     else{hs.d++;hs.pts++;as_.d++;as_.pts++;hs.form.push('D');as_.form.push('D');}
   });
-  const sorted=Object.entries(stats).map(([name,s])=>({name,...s,gd:s.gf-s.ga}))
-    .sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
-  document.getElementById('standings-body').innerHTML = sorted.map((t,i)=>{
-    const r=i+1, rc=r===1?'rank rank-1':r===2?'rank rank-2':r===3?'rank rank-3':'rank';
+  const sorted=Object.entries(stats).map(([name,s])=>({name,...s,gd:s.gf-s.ga})).sort((a,b)=>b.pts-a.pts||b.gd-a.gd||b.gf-a.gf);
+  document.getElementById('standings-body').innerHTML=sorted.map((t,i)=>{
+    const r=i+1,rc=r===1?'rank rank-1':r===2?'rank rank-2':r===3?'rank rank-3':'rank';
     const form=t.form.slice(-5).map(f=>`<span class="form-dot form-${f.toLowerCase()}">${f==='W'?'ف':f==='D'?'ت':'خ'}</span>`).join('');
     const gd=t.gd>0?'+'+t.gd:t.gd;
     return `<tr><td><span class="${rc}">${r}</span></td><td class="team-name-td">${t.name}</td>
@@ -447,70 +470,62 @@ function renderStandings() {
 }
 
 function renderScorers() {
-  const totals = {};
-  MATCHES.forEach((m,idx)=>{
-    ['home','away'].forEach(side=>{
-      (PLAYERS[m[side]]||[]).forEach(player=>{
-        const d=getPlayerStat(idx,side,player);
-        if(!totals[player]) totals[player]={goals:0,team:m[side]};
-        totals[player].goals+=(d.goals||0);
-      });
-    });
-  });
+  const totals={};
+  MATCHES.forEach((m,idx)=>['home','away'].forEach(side=>(PLAYERS[m[side]]||[]).forEach(p=>{
+    const d=getPS(idx,side,p);
+    if(!totals[p]) totals[p]={goals:0,team:m[side]};
+    totals[p].goals+=(d.goals||0);
+  })));
   const sorted=Object.entries(totals).filter(([,v])=>v.goals>0).sort((a,b)=>b[1].goals-a[1].goals);
-  document.getElementById('scorers-body').innerHTML = sorted.length
-    ? sorted.map(([name,v],i)=>`<div class="scorer-row"><span class="scorer-name">${i+1}. ${name}</span><span class="scorer-team">${v.team}</span><span class="scorer-goals">⚽ ${v.goals}</span></div>`).join('')
-    : '<div class="scorer-row" style="color:#aaa;justify-content:center">لا توجد أهداف مسجلة بعد</div>';
+  document.getElementById('scorers-body').innerHTML=sorted.length
+    ?sorted.map(([name,v],i)=>`<div class="scorer-row"><span class="scorer-name">${i+1}. ${name}</span><span class="scorer-team">${v.team}</span><span class="scorer-goals">⚽ ${v.goals}</span></div>`).join('')
+    :'<div class="scorer-row" style="color:#aaa;justify-content:center">لا توجد أهداف مسجلة بعد</div>';
 }
 
-function renderCards() {
-  const suspended=[], yellows={};
-  MATCHES.forEach((m,idx)=>{
-    ['home','away'].forEach(side=>{
-      (PLAYERS[m[side]]||[]).forEach(player=>{
-        const d=getPlayerStat(idx,side,player);
-        if(d.suspended) suspended.push({player,team:m[side]});
-        if(!yellows[player]) yellows[player]={count:0,team:m[side]};
-        yellows[player].count+=(d.yellows||0);
-      });
-    });
-  });
-  const suspUniq=[...new Map(suspended.map(s=>[s.player,s])).values()];
-  document.getElementById('suspended-body').innerHTML = suspUniq.length
-    ? suspUniq.map(s=>`<div class="scorer-row"><span class="scorer-name">${s.player}</span><span class="scorer-team">${s.team}</span><span class="susp-tag">🚫 موقوف</span></div>`).join('')
-    : '<div class="scorer-row" style="color:#aaa;justify-content:center">لا يوجد موقوفون</div>';
+function renderCardsView() {
+  const suspended=[],yellows={},reds={};
+  MATCHES.forEach((m,idx)=>['home','away'].forEach(side=>(PLAYERS[m[side]]||[]).forEach(p=>{
+    const d=getPS(idx,side,p);
+    if(d.suspended) suspended.push({p,team:m[side]});
+    if(!yellows[p]) yellows[p]={count:0,team:m[side]};
+    yellows[p].count+=(d.yellows||0);
+    if(!reds[p]) reds[p]={count:0,team:m[side]};
+    reds[p].count+=(d.reds||0);
+  })));
+
+  const suspUniq=[...new Map(suspended.map(s=>[s.p,s])).values()];
+  document.getElementById('suspended-body').innerHTML=suspUniq.length
+    ?suspUniq.map(s=>`<div class="scorer-row"><span class="scorer-name">${s.p}</span><span class="scorer-team">${s.team}</span><span class="susp-tag">🚫 موقوف</span></div>`).join('')
+    :'<div class="scorer-row" style="color:#aaa;justify-content:center">لا يوجد موقوفون</div>';
+
+  const sortedR=Object.entries(reds).filter(([,v])=>v.count>0).sort((a,b)=>b[1].count-a[1].count);
+  document.getElementById('reds-body').innerHTML=sortedR.length
+    ?sortedR.map(([name,v],i)=>`<div class="scorer-row"><span class="scorer-name">${i+1}. ${name}</span><span class="scorer-team">${v.team}</span><span class="scorer-goals" style="color:var(--red)">🟥 ${v.count}</span></div>`).join('')
+    :'<div class="scorer-row" style="color:#aaa;justify-content:center">لا توجد بطاقات حمراء</div>';
+
   const sortedY=Object.entries(yellows).filter(([,v])=>v.count>0).sort((a,b)=>b[1].count-a[1].count);
-  document.getElementById('yellows-body').innerHTML = sortedY.length
-    ? sortedY.map(([name,v],i)=>`<div class="scorer-row"><span class="scorer-name">${i+1}. ${name}</span><span class="scorer-team">${v.team}</span><span class="scorer-goals" style="color:var(--yellow)">🟨 ${v.count}</span></div>`).join('')
-    : '<div class="scorer-row" style="color:#aaa;justify-content:center">لا توجد بطاقات بعد</div>';
+  document.getElementById('yellows-body').innerHTML=sortedY.length
+    ?sortedY.map(([name,v],i)=>`<div class="scorer-row"><span class="scorer-name">${i+1}. ${name}</span><span class="scorer-team">${v.team}</span><span class="scorer-goals" style="color:var(--yellow)">🟨 ${v.count}</span></div>`).join('')
+    :'<div class="scorer-row" style="color:#aaa;justify-content:center">لا توجد بطاقات صفراء</div>';
 }
 
-// ── INIT ──
-// Check if view mode
-const IS_VIEW = new URLSearchParams(window.location.search).get('view') === '1';
-if (IS_VIEW) {
+const IS_VIEW=new URLSearchParams(window.location.search).get('view')==='1';
+if(IS_VIEW){
   document.body.classList.add('view-mode');
-  // Switch to standings tab by default in view mode (skip matches tab)
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  const firstVisibleTab = document.querySelector('.tab:not(.edit-only)');
-  if (firstVisibleTab) firstVisibleTab.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.tab:not(.edit-only)').classList.add('active');
   document.getElementById('panel-standings').classList.add('active');
 }
 
-function shareViewLink() {
-  const base = window.location.origin + window.location.pathname;
-  const link = base + '?view=1';
-  navigator.clipboard.writeText(link).then(() => {
-    const toast = document.getElementById('share-toast');
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2500);
-  }).catch(() => {
-    prompt('انسخ هذا الرابط:', link);
-  });
+function shareViewLink(){
+  const link=location.origin+location.pathname+'?view=1';
+  navigator.clipboard.writeText(link).then(()=>{
+    const t=document.getElementById('share-toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);
+  }).catch(()=>prompt('انسخ هذا الرابط:',link));
 }
 
-function switchTab(name, btn) {
+function switchTab(name,btn){
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
@@ -518,8 +533,7 @@ function switchTab(name, btn) {
 }
 
 loadAll();
-// Auto-refresh every 30 seconds
-setInterval(loadAll, 30000);
+setInterval(loadAll,30000);
 </script>
 </body>
 </html>
