@@ -14,16 +14,45 @@
   .header h1 { color:var(--gold); font-size:1.5rem; font-weight:900; }
   .header p { color:rgba(255,255,255,0.6); font-size:0.78rem; margin-top:3px; }
 
-  .sync-bar { background:white; border-bottom:1px solid var(--gray-200); padding:6px 20px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:0.75rem; }
+  .sync-bar { background:white; border-bottom:1px solid var(--gray-200); padding:6px 20px; display:flex; align-items:center; gap:8px; font-size:0.75rem; }
   .sync-dot { width:8px; height:8px; border-radius:50%; background:var(--gray-400); flex-shrink:0; }
   .sync-dot.online { background:var(--green); animation:pulse 2s infinite; }
   .sync-dot.syncing { background:var(--yellow); }
   .sync-dot.error { background:var(--red); }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .sync-text { color:var(--gray-400); }
+  .sync-text { color:var(--gray-400); flex:1; }
+
+  /* ADMIN BAR */
+  .admin-bar { background:#f8f9ff; border-bottom:1px solid var(--gray-200); padding:6px 20px; display:flex; align-items:center; gap:10px; font-size:0.75rem; }
+  .admin-badge { background:var(--blue); color:white; font-size:0.65rem; font-weight:900; padding:2px 10px; border-radius:20px; }
+  .admin-badge.view { background:var(--gray-400); }
+  .admin-btn { background:var(--gold); color:#1a1a2e; border:none; border-radius:7px; padding:5px 14px; font-family:'Cairo',sans-serif; font-size:0.75rem; font-weight:900; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+  .admin-btn:hover { background:#d4991f; }
+  .admin-btn.logout { background:var(--gray-200); color:#555; }
+  .admin-btn.logout:hover { background:#dee2e6; }
+  .share-btn { background:var(--blue); color:white; border:none; border-radius:7px; padding:5px 14px; font-family:'Cairo',sans-serif; font-size:0.75rem; font-weight:900; cursor:pointer; white-space:nowrap; }
+  .share-btn:hover { background:var(--blue-mid); }
+
+  /* LOGIN MODAL */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center; }
+  .modal-overlay.show { display:flex; }
+  .modal { background:white; border-radius:16px; padding:32px 28px; width:90%; max-width:360px; box-shadow:0 20px 60px rgba(0,0,0,0.3); text-align:center; }
+  .modal h2 { color:var(--blue); font-size:1.2rem; font-weight:900; margin-bottom:6px; }
+  .modal p { color:var(--gray-400); font-size:0.78rem; margin-bottom:20px; }
+  .modal input { width:100%; border:2px solid var(--gray-200); border-radius:8px; padding:10px 14px; font-family:'Cairo',sans-serif; font-size:0.9rem; text-align:center; margin-bottom:12px; transition:border 0.2s; letter-spacing:3px; }
+  .modal input:focus { outline:none; border-color:var(--blue); }
+  .modal-submit { width:100%; background:var(--blue); color:white; border:none; border-radius:8px; padding:11px; font-family:'Cairo',sans-serif; font-size:0.9rem; font-weight:900; cursor:pointer; transition:background 0.2s; }
+  .modal-submit:hover { background:var(--blue-mid); }
+  .modal-error { color:var(--red); font-size:0.75rem; margin-top:8px; display:none; }
+  .modal-cancel { background:none; border:none; color:var(--gray-400); font-family:'Cairo',sans-serif; font-size:0.75rem; cursor:pointer; margin-top:10px; display:block; width:100%; }
+
+  /* VIEW BANNER */
+  .view-banner { background:#fff8e1; border-bottom:1px solid #ffe082; padding:6px 20px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:0.75rem; color:#b8860b; font-weight:700; }
+
+  .share-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#1a1a2e; color:white; padding:10px 20px; border-radius:8px; font-size:0.82rem; font-weight:700; z-index:999; opacity:0; transition:opacity 0.3s; pointer-events:none; white-space:nowrap; }
+  .share-toast.show { opacity:1; }
 
   .container { max-width:980px; margin:0 auto; padding:20px 14px; }
-
   .tabs { display:flex; gap:4px; margin-bottom:18px; border-bottom:2px solid var(--gray-200); overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
   .tabs::-webkit-scrollbar { display:none; }
   .tab { background:none; border:none; font-family:'Cairo',sans-serif; font-size:0.85rem; font-weight:700; color:var(--gray-400); padding:10px 16px; cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:all 0.2s; white-space:nowrap; flex-shrink:0; }
@@ -35,7 +64,6 @@
   .card { background:white; border-radius:12px; overflow:hidden; box-shadow:0 2px 16px rgba(1,66,156,0.08); margin-bottom:16px; }
   .card-header { background:var(--blue); padding:11px 18px; color:var(--gold); font-size:0.95rem; font-weight:900; }
 
-  /* STANDINGS — scrollable on mobile */
   .table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
   table { width:100%; border-collapse:collapse; min-width:520px; }
   thead th { background:var(--blue); color:rgba(255,255,255,0.85); font-size:0.73rem; font-weight:700; padding:9px 8px; text-align:center; border-bottom:2px solid var(--gold); white-space:nowrap; }
@@ -43,7 +71,6 @@
   tbody tr { border-bottom:1px solid var(--gray-200); transition:background 0.15s; }
   tbody tr:hover { background:#eef3fb; }
   tbody tr:nth-child(even) { background:#fafbfc; }
-  tbody tr:nth-child(even):hover { background:#eef3fb; }
   tbody td { padding:10px 8px; text-align:center; font-size:0.85rem; color:#1a1a2e; vertical-align:middle; white-space:nowrap; }
   .rank { font-weight:900; color:var(--blue); font-size:1rem; }
   .rank-1 { color:#f59f00; } .rank-2 { color:#868e96; } .rank-3 { color:#cd6133; }
@@ -52,7 +79,6 @@
   .form-dot { display:inline-block; width:17px; height:17px; border-radius:50%; font-size:0.58rem; font-weight:900; line-height:17px; text-align:center; color:white; margin:1px; }
   .form-w { background:var(--green); } .form-d { background:var(--gray-400); } .form-l { background:var(--red); }
 
-  /* MATCH CARDS */
   .month-label { font-size:0.72rem; font-weight:700; color:var(--gray-400); letter-spacing:0.08em; margin:14px 0 8px; }
   .match-card { background:white; border-radius:10px; box-shadow:0 2px 10px rgba(1,66,156,0.07); margin-bottom:10px; overflow:hidden; }
   .match-top { display:flex; align-items:center; gap:12px; padding:12px 16px; flex-wrap:wrap; }
@@ -74,29 +100,27 @@
   .played-badge { font-size:0.65rem; font-weight:700; padding:2px 7px; border-radius:20px; background:#ebfbee; color:var(--green); border:1px solid var(--green); }
   .pending-badge { font-size:0.65rem; font-weight:700; padding:2px 7px; border-radius:20px; background:var(--gray-100); color:var(--gray-400); border:1px solid var(--gray-200); }
 
-  /* DETAIL PANEL — goals only */
   .match-detail { display:none; border-top:1px solid var(--gray-200); padding:14px 16px; background:#fafbfc; }
   .match-detail.open { display:block; }
   .detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
   @media(max-width:520px){ .detail-grid { grid-template-columns:1fr; } }
   .team-detail-box { background:white; border-radius:8px; border:1px solid var(--gray-200); padding:12px; }
   .team-detail-title { font-weight:900; color:var(--blue); font-size:0.82rem; margin-bottom:10px; border-bottom:1px solid var(--gray-200); padding-bottom:6px; }
-  .player-row { display:flex; align-items:center; justify-content:space-between; padding:5px 0; border-bottom:1px solid var(--gray-100); }
+  .player-row { display:flex; align-items:center; justify-content:space-between; padding:5px 0; border-bottom:1px solid var(--gray-100); flex-wrap:wrap; gap:6px; }
   .player-row:last-child { border-bottom:none; }
-  .player-name { font-size:0.78rem; font-weight:700; flex:1; color:#1a1a2e; }
+  .player-name { font-size:0.78rem; font-weight:700; flex:1; color:#1a1a2e; min-width:80px; }
   .counter { display:flex; align-items:center; gap:4px; }
   .ctr-btn { width:22px; height:22px; border-radius:5px; border:none; cursor:pointer; font-size:0.85rem; font-weight:900; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
   .ctr-val { font-size:0.88rem; font-weight:900; min-width:18px; text-align:center; }
-  .goal-btn { background:var(--green); color:white; } .goal-btn:hover{background:#237032;} .goal-btn.minus{background:#dee2e6;color:#555;}
+  .goal-btn { background:var(--green); color:white; } .goal-btn.minus{background:#dee2e6;color:#555;}
   .goal-val { color:var(--green); }
-  .yellow-btn { background:var(--yellow); color:white; } .yellow-btn:hover{background:#d48806;} .yellow-btn.minus{background:#dee2e6;color:#555;}
+  .yellow-btn { background:var(--yellow); color:white; } .yellow-btn.minus{background:#dee2e6;color:#555;}
   .yellow-val { color:var(--yellow); }
-  .red-btn { background:var(--red); color:white; } .red-btn:hover{background:#b02525;} .red-btn.minus{background:#dee2e6;color:#555;}
+  .red-btn { background:var(--red); color:white; } .red-btn.minus{background:#dee2e6;color:#555;}
   .red-val { color:var(--red); }
   .susp-btn { font-size:0.65rem; font-weight:700; padding:3px 8px; border-radius:20px; cursor:pointer; border:1px solid var(--gray-200); background:white; color:var(--gray-400); font-family:'Cairo',sans-serif; transition:all 0.2s; white-space:nowrap; }
   .susp-btn.on { background:var(--red); border-color:var(--red); color:white; }
 
-  /* SCORERS / CARDS */
   .scorer-row { display:flex; align-items:center; justify-content:space-between; padding:9px 18px; border-bottom:1px solid var(--gray-200); font-size:0.85rem; gap:6px; }
   .scorer-row:last-child { border-bottom:none; }
   .scorer-name { font-weight:700; }
@@ -105,40 +129,61 @@
   .susp-tag { background:var(--red); color:white; font-size:0.65rem; font-weight:700; padding:2px 8px; border-radius:20px; white-space:nowrap; }
   .loading { text-align:center; padding:30px; color:var(--gray-400); font-size:0.85rem; }
 
-  /* SHARE */
-  .share-btn { background:var(--gold); color:#1a1a2e; border:none; border-radius:8px; padding:8px 18px; font-family:'Cairo',sans-serif; font-size:0.82rem; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:6px; transition:all 0.2s; }
-  .share-btn:hover { background:#d4991f; }
-  .share-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#1a1a2e; color:white; padding:10px 20px; border-radius:8px; font-size:0.82rem; font-weight:700; z-index:999; opacity:0; transition:opacity 0.3s; pointer-events:none; }
-  .share-toast.show { opacity:1; }
-  body.view-mode .edit-only { display:none !important; }
-  body.view-mode .view-banner { display:flex !important; }
-  .view-banner { display:none; background:#ebfbee; border-bottom:1px solid #b2f2bb; padding:7px 20px; align-items:center; justify-content:center; gap:8px; font-size:0.78rem; color:var(--green); font-weight:700; }
+  /* DISABLED state for view mode */
+  body.view-mode .score-input { pointer-events:none; background:var(--gray-100); color:var(--gray-400); }
+  body.view-mode .save-btn,
+  body.view-mode .expand-btn,
+  body.view-mode .ctr-btn,
+  body.view-mode .susp-btn { pointer-events:none; opacity:0.4; }
+  body.view-mode .edit-tab { display:none; }
 </style>
 </head>
 <body>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal">
+    <div style="font-size:2rem;margin-bottom:8px">🔐</div>
+    <h2>دخول المشرف</h2>
+    <p>أدخل كلمة المرور للوصول إلى وضع التعديل</p>
+    <input type="password" id="pw-input" placeholder="● ● ● ● ● ●" onkeydown="if(event.key==='Enter')checkPassword()">
+    <button class="modal-submit" onclick="checkPassword()">دخول</button>
+    <div class="modal-error" id="pw-error">❌ كلمة المرور غير صحيحة</div>
+    <button class="modal-cancel" onclick="closeLogin()">إلغاء</button>
+  </div>
+</div>
 
 <div class="header">
   <h1>🏆 دوري الجيل الجديد 2026</h1>
   <p>فوز = 3 نقاط · تعادل = 1 نقطة · خسارة = 0 نقاط</p>
 </div>
-<div class="view-banner">👁️ وضع العرض فقط — لا يمكن التعديل</div>
+
+<div class="view-banner" id="view-banner">
+  👁️ وضع العرض — <span style="text-decoration:underline;cursor:pointer;margin-right:6px" onclick="openLogin()">دخول المشرف</span>
+</div>
+
 <div class="sync-bar">
   <div class="sync-dot" id="sync-dot"></div>
-  <span class="sync-text" id="sync-text">جارٍ الاتصال بقاعدة البيانات...</span>
-  <button class="share-btn edit-only" onclick="shareViewLink()" style="margin-right:auto">📤 مشاركة</button>
+  <span class="sync-text" id="sync-text">جارٍ الاتصال...</span>
+  <div style="display:flex;gap:8px;margin-right:auto;align-items:center">
+    <button class="share-btn" onclick="shareViewLink()">📤 مشاركة</button>
+    <span id="admin-status" style="display:none">
+      <span class="admin-badge">🔑 مشرف</span>
+      <button class="admin-btn logout" onclick="logout()" style="margin-right:6px">خروج</button>
+    </span>
+  </div>
 </div>
 <div class="share-toast" id="share-toast">✓ تم نسخ رابط المشاركة!</div>
 
 <div class="container">
   <div class="tabs">
     <button class="tab active" onclick="switchTab('standings',this)">🏆 الترتيب</button>
-    <button class="tab edit-only" onclick="switchTab('matches',this)">📅 النتائج والأهداف</button>
-    <button class="tab edit-only" onclick="switchTab('cardsinput',this)">🟨 البطاقات</button>
+    <button class="tab edit-tab" onclick="switchTab('matches',this)">📅 النتائج والأهداف</button>
+    <button class="tab edit-tab" onclick="switchTab('cardsinput',this)">🟨 البطاقات</button>
     <button class="tab" onclick="switchTab('scorers',this)">⚽ الهدافون</button>
     <button class="tab" onclick="switchTab('cardsview',this)">📋 الإيقافات</button>
   </div>
 
-  <!-- STANDINGS -->
   <div class="panel active" id="panel-standings">
     <div class="card">
       <div class="card-header">📊 جدول الترتيب</div>
@@ -155,17 +200,14 @@
     </div>
   </div>
 
-  <!-- RESULTS + GOALS INPUT -->
   <div class="panel" id="panel-matches">
     <div id="matches-list"><div class="loading">⏳ جارٍ التحميل...</div></div>
   </div>
 
-  <!-- CARDS INPUT -->
   <div class="panel" id="panel-cardsinput">
     <div id="cards-input-list"><div class="loading">⏳ جارٍ التحميل...</div></div>
   </div>
 
-  <!-- SCORERS VIEW -->
   <div class="panel" id="panel-scorers">
     <div class="card">
       <div class="card-header">⚽ ترتيب الهدافين</div>
@@ -173,7 +215,6 @@
     </div>
   </div>
 
-  <!-- SUSPENSIONS VIEW -->
   <div class="panel" id="panel-cardsview">
     <div class="card" style="margin-bottom:16px">
       <div class="card-header">🚫 الموقوفون للجولة القادمة</div>
@@ -191,6 +232,68 @@
 </div>
 
 <script>
+// ── SECURITY ──
+// Change this password to whatever you want!
+const ADMIN_PASSWORD = 'NGL2026admin';
+const SESSION_KEY = 'ngl_admin_session';
+
+let isAdmin = false;
+
+function checkPassword() {
+  const pw = document.getElementById('pw-input').value;
+  if (pw === ADMIN_PASSWORD) {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    isAdmin = true;
+    applyAdminMode();
+    closeLogin();
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+function applyAdminMode() {
+  document.body.classList.remove('view-mode');
+  document.getElementById('view-banner').style.display = 'none';
+  document.getElementById('admin-status').style.display = 'flex';
+  document.getElementById('admin-status').style.alignItems = 'center';
+}
+
+function applyViewMode() {
+  document.body.classList.add('view-mode');
+  document.getElementById('view-banner').style.display = 'flex';
+  document.getElementById('admin-status').style.display = 'none';
+}
+
+function openLogin() {
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-error').style.display = 'none';
+  document.getElementById('login-modal').classList.add('show');
+  setTimeout(() => document.getElementById('pw-input').focus(), 100);
+}
+
+function closeLogin() {
+  document.getElementById('login-modal').classList.remove('show');
+}
+
+function logout() {
+  sessionStorage.removeItem(SESSION_KEY);
+  isAdmin = false;
+  applyViewMode();
+  // Switch to standings tab
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.tab').classList.add('active');
+  document.getElementById('panel-standings').classList.add('active');
+}
+
+// Close modal on overlay click
+document.getElementById('login-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeLogin();
+});
+
+// ── SUPABASE ──
 const SUPABASE_URL = 'https://reksuhcvliwqjorpssou.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJla3N1aGN2bGl3cWpvcnBzc291Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MzM1MjYsImV4cCI6MjA4NzIwOTUyNn0.Nn1dIGX035AUFuUk9v6zaldjIC6ZHyxeD5rVoIUYPDk';
 
@@ -228,20 +331,21 @@ const MATCHES = [
   {day:21,date:'12 مارس',home:'إتحاد أكني',away:'الخفافيش'},
 ];
 
-let matchResults = {}, playerStats = {};
+let matchResults={}, playerStats={};
 
 async function sbGet(path) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, { headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`} });
-  if (!res.ok) throw new Error(`${res.status} ${await res.text()}`);
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, { headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`} });
+  if(!res.ok) throw new Error(`${res.status} ${await res.text()}`);
   return res.json();
 }
 async function sbUpsert(table, body) {
+  if(!isAdmin) { alert('يجب تسجيل الدخول أولاً كمشرف'); return; }
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
     method:'POST',
     headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},
-    body: JSON.stringify(body)
+    body:JSON.stringify(body)
   });
-  if (!res.ok) throw new Error(`${res.status} ${await res.text()}`);
+  if(!res.ok) throw new Error(`${res.status} ${await res.text()}`);
 }
 
 function setSyncStatus(s,t) {
@@ -263,6 +367,7 @@ async function loadAll() {
 }
 
 async function saveMatchResult(idx) {
+  if(!isAdmin) { openLogin(); return; }
   const h=document.getElementById('h-'+idx).value, a=document.getElementById('a-'+idx).value;
   if(h===''||a==='') return;
   setSyncStatus('syncing','⏳ جارٍ الحفظ...');
@@ -281,6 +386,7 @@ function getPS(idx,side,player) {
 }
 
 async function savePS(idx,side,player) {
+  if(!isAdmin) { openLogin(); return; }
   const d=getPS(idx,side,player);
   setSyncStatus('syncing','⏳ جارٍ الحفظ...');
   try {
@@ -291,6 +397,7 @@ async function savePS(idx,side,player) {
 }
 
 function changeGoal(idx,side,player,delta) {
+  if(!isAdmin){openLogin();return;}
   const d=getPS(idx,side,player);
   d.goals=Math.max(0,(d.goals||0)+delta);
   const el=document.getElementById(`gv-${idx}-${side}-${player}`);
@@ -299,11 +406,12 @@ function changeGoal(idx,side,player,delta) {
 }
 
 function changeCard(idx,side,player,field,delta) {
+  if(!isAdmin){openLogin();return;}
   const d=getPS(idx,side,player);
   d[field]=Math.max(0,(d[field]||0)+delta);
   const el=document.getElementById(`cv-${idx}-${side}-${player}-${field}`);
   if(el) el.textContent=d[field];
-  if(field==='reds') {
+  if(field==='reds'){
     d.suspended=d.reds>0;
     const sb=document.getElementById(`cs-${idx}-${side}-${player}`);
     if(sb){sb.textContent=d.suspended?'🚫 موقوف':'لا';sb.classList.toggle('on',d.suspended);}
@@ -312,6 +420,7 @@ function changeCard(idx,side,player,field,delta) {
 }
 
 function toggleSusp(idx,side,player) {
+  if(!isAdmin){openLogin();return;}
   const d=getPS(idx,side,player);
   d.suspended=!d.suspended;
   const sb=document.getElementById(`cs-${idx}-${side}-${player}`);
@@ -325,7 +434,6 @@ function toggleDetail(idx) {
   btn.classList.toggle('open',open);
   btn.textContent=open?'− إغلاق':'+ أهداف';
 }
-
 function toggleCardDetail(idx) {
   const el=document.getElementById('cdetail-'+idx),btn=document.getElementById('cexpand-'+idx);
   const open=el.classList.toggle('open');
@@ -345,7 +453,6 @@ function renderMatches() {
     const hVal=played?r.home_score:'',aVal=played?r.away_score:'';
     const badge=played?'<span class="played-badge">✓ مسجل</span>':'<span class="pending-badge">لم يلعب</span>';
 
-    // Goals detail
     let detail=`<div class="match-detail" id="detail-${idx}"><div class="detail-grid">`;
     ['home','away'].forEach(side=>{
       const team=m[side],players=PLAYERS[team]||[];
@@ -399,14 +506,13 @@ function renderCardsInput() {
     const played=r&&r.home_score!==null&&r.home_score!==undefined;
     const badge=played?`<span class="played-badge">${r.home_score} - ${r.away_score}</span>`:'<span class="pending-badge">لم يلعب</span>';
 
-    // Cards detail
     let detail=`<div class="match-detail" id="cdetail-${idx}"><div class="detail-grid">`;
     ['home','away'].forEach(side=>{
       const team=m[side],players=PLAYERS[team]||[];
       detail+=`<div class="team-detail-box"><div class="team-detail-title">${team}</div>`;
       players.forEach(p=>{
         const d=getPS(idx,side,p);
-        detail+=`<div class="player-row" style="flex-wrap:wrap;gap:6px;">
+        detail+=`<div class="player-row">
           <span class="player-name">${p}</span>
           <div class="counter">
             <button class="ctr-btn yellow-btn minus" onclick="changeCard(${idx},'${side}','${p}','yellows',-1)">−</button>
@@ -431,7 +537,7 @@ function renderCardsInput() {
         <div class="match-date">${m.date}</div>
         <div class="match-teams">
           <div class="match-team-name">${m.home}</div>
-          <span class="score-sep">vs</span>
+          <span class="score-sep" style="color:var(--gray-400)">vs</span>
           <div class="match-team-name">${m.away}</div>
         </div>
         ${badge}
@@ -492,48 +598,45 @@ function renderCardsView() {
     if(!reds[p]) reds[p]={count:0,team:m[side]};
     reds[p].count+=(d.reds||0);
   })));
-
   const suspUniq=[...new Map(suspended.map(s=>[s.p,s])).values()];
   document.getElementById('suspended-body').innerHTML=suspUniq.length
     ?suspUniq.map(s=>`<div class="scorer-row"><span class="scorer-name">${s.p}</span><span class="scorer-team">${s.team}</span><span class="susp-tag">🚫 موقوف</span></div>`).join('')
     :'<div class="scorer-row" style="color:#aaa;justify-content:center">لا يوجد موقوفون</div>';
-
   const sortedR=Object.entries(reds).filter(([,v])=>v.count>0).sort((a,b)=>b[1].count-a[1].count);
   document.getElementById('reds-body').innerHTML=sortedR.length
     ?sortedR.map(([name,v],i)=>`<div class="scorer-row"><span class="scorer-name">${i+1}. ${name}</span><span class="scorer-team">${v.team}</span><span class="scorer-goals" style="color:var(--red)">🟥 ${v.count}</span></div>`).join('')
     :'<div class="scorer-row" style="color:#aaa;justify-content:center">لا توجد بطاقات حمراء</div>';
-
   const sortedY=Object.entries(yellows).filter(([,v])=>v.count>0).sort((a,b)=>b[1].count-a[1].count);
   document.getElementById('yellows-body').innerHTML=sortedY.length
     ?sortedY.map(([name,v],i)=>`<div class="scorer-row"><span class="scorer-name">${i+1}. ${name}</span><span class="scorer-team">${v.team}</span><span class="scorer-goals" style="color:var(--yellow)">🟨 ${v.count}</span></div>`).join('')
     :'<div class="scorer-row" style="color:#aaa;justify-content:center">لا توجد بطاقات صفراء</div>';
 }
 
-const IS_VIEW=new URLSearchParams(window.location.search).get('view')==='1';
-if(IS_VIEW){
-  document.body.classList.add('view-mode');
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelector('.tab:not(.edit-only)').classList.add('active');
-  document.getElementById('panel-standings').classList.add('active');
-}
-
-function shareViewLink(){
-  const link=location.origin+location.pathname+'?view=1';
+function shareViewLink() {
+  const link = location.origin + location.pathname;
   navigator.clipboard.writeText(link).then(()=>{
     const t=document.getElementById('share-toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);
   }).catch(()=>prompt('انسخ هذا الرابط:',link));
 }
 
-function switchTab(name,btn){
+function switchTab(name,btn) {
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('panel-'+name).classList.add('active');
 }
 
+// ── INIT ──
+// Check session
+if (sessionStorage.getItem(SESSION_KEY) === '1') {
+  isAdmin = true;
+  applyAdminMode();
+} else {
+  applyViewMode();
+}
+
 loadAll();
-setInterval(loadAll,30000);
+setInterval(loadAll, 30000);
 </script>
 </body>
 </html>
